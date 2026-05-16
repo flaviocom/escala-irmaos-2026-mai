@@ -1,6 +1,80 @@
-# 🤖 AI_MASTER_LOG — Escala de Porteiros 2026 (Provisória)
+﻿# 🤖 AI_MASTER_LOG — Escala de Porteiros 2026 (Provisória)
 
 Este arquivo é a **memória viva do projeto**. Toda alteração relevante feita com auxílio de IA deve ser registrada aqui, em ordem cronológica reversa (mais recente no topo).
+
+---
+
+## 📌 Sessão 2 — 16/05/2026 — Deploy em produção (GitHub + Vercel)
+
+### 1. Solicitação
+
+Executar runbook completo de deploy: extrair projeto local, validar build, subir no GitHub (conta `flaviocom`), publicar na Vercel e auditar o site final contra checklist objetivo de 17 critérios + validação amostral cruzada com `RELATORIO_ESCALA_COMPLETA.md`.
+
+### 2. Ações executadas
+
+#### 2.1. Fase 0 — Pré-voo (validação de ambiente)
+- Confirmado git 2.53, node v25.8.0, npm 11.11.0
+- Constatado que GitHub CLI (`gh`) **não está instalado** → adotado fluxo via navegador
+- Detectada divergência de caminho: projeto extraído em `…\escala-irmaos-2026-maio\files (1)\escala-irmaos-2026-mai\escala-irmaos-2026-mai\` (nesting triplo)
+
+#### 2.2. Fase 1 — Preparação local
+- **Arquivo movido:** projeto realocado para `D:\Antigravity\Meus-Projetos\escala-irmaos-2026-mai\` (caminho limpo)
+- `npm install` rodou em background — **levou 23 minutos** (lentidão atribuída a Node v25 + npm 11)
+- `npm run build` ✓ 2503 módulos transformados em 3,94 s
+  - `dist/index.html` 0,61 kB
+  - `dist/assets/index-DKX_4KQy.css` 33,51 kB
+  - `dist/assets/index-kO2RdLZD.js` 235,13 kB
+- `npm run dev` em background → HTTP 200 em `http://127.0.0.1:5173/`
+- Validação visual via DOM Snapshot: checks V1.1, V1.2, V1.4, V1.5 confirmados
+
+#### 2.3. Fase 2 — GitHub
+- `git init` + `git branch -M main`
+- `git config user.email "brflaviooliveira@gmail.com"` (override local do email default)
+- `git add . && git commit -m "feat: versao inicial - escala provisoria 17/05 a 31/12/2026"` → 35 arquivos, 6.590 inserções, commit `4f3973e`
+- Repo criado via navegador em `flaviocom/escala-irmaos-2026-mai` (Public, sem README inicial)
+- `git remote add origin` + `git push -u origin main` → branch `main` rastreando `origin/main`
+- Validação via API: 15 arquivos + pasta `src/` no root
+
+#### 2.4. Fase 3 — Vercel
+- Importação via `https://vercel.com/new`: Vercel detectou framework Vite automaticamente
+- Deploy iniciado e finalizado em ~40 s, status `Ready`
+- **URL canônica:** https://escala-irmaos-2026-mai.vercel.app
+- URL deployment imutável: `escala-irmaos-2026-5kfwk3e1u-flaviocoms-projects.vercel.app`
+
+#### 2.5. Fase 4 — Auditoria em produção
+- 15 critérios aprovados, 2 parcialmente validados (A13 filtro irmão e A15 mobile), 0 falhas
+- Validação amostral cruzada de 6 turnos contra o relatório → 100% bate
+
+#### 2.6. Fase 5 — Relatório
+- Criado `RELATORIO_DEPLOY.md` na raiz do projeto
+
+### 3. Regras de negócio aprendidas / confirmadas
+
+- A escala provisória contém exatamente **83 turnos** (82 com porteiros + 1 Santa Ceia)
+- 15 irmãos ativos (Thiago removido conforme Sessão 1)
+- 16/08/2026 é Santa Ceia (sem porteiros escalados) — confirmado em produção
+- Primeiro turno: 17/05/2026 Dom Manhã (Adilson, Luíz Cezar, Marcos)
+- Último turno: 29/12/2026 Ter Noite (Leandro, Lucas, Luis Henrique)
+- O título da página inclui o sufixo "(Provisória)" e há badge âmbar com tooltip `Enquanto durar a reforma`
+- `vercel.json` no projeto já fornece SPA rewrite para todas as rotas → essencial para React Router funcionar em produção
+
+### 4. Arquivos alterados/criados nesta sessão
+
+- ✅ Criado: `RELATORIO_DEPLOY.md` (relatório estruturado da Fase 5)
+- ✅ Atualizado: `AI_MASTER_LOG.md` (esta entrada — Sessão 2)
+- ⚙ Gerado por build (não versionado): `node_modules/`, `dist/`
+- 📌 Sem alterações no código-fonte (`src/`, `package.json`, configs) — runbook proíbe modificação durante deploy
+
+### 5. Próximos passos
+
+1. Divulgar a URL `https://escala-irmaos-2026-mai.vercel.app` aos porteiros via WhatsApp
+2. Validar A13 (filtro por irmão "Adilson") e A15 (mobile real) com 1–2 testadores
+3. Considerar domínio próprio em `vercel.com → Domains`
+4. Rodar `npx update-browserslist-db@latest` no próximo commit
+5. Avaliar downgrade para Node 20 LTS para acelerar futuros `npm install` (de 23 min para ~2 min)
+6. Configurar GitHub Actions com check de build em PRs (opcional)
+
+---
 
 ---
 
